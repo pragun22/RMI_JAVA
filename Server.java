@@ -19,6 +19,8 @@ public class Server{
             System.exit(0);
         }
         Integer port = Integer.parseInt(args[0]);
-            test();
+        Graph obj = new Graph();
+        LocateRegistry.createRegistry(port);
+        Naming.rebind("rmi://0.0.0.0:"+ port.toString() + "/graph", obj);
     }
 }

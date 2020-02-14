@@ -27,12 +27,16 @@ public class Graph extends UnicastRemoteObject {
         if(!Graphs.containsKey(graphName)){
             return "Sorry no such graph exist";
         }
+        Integer sz = Graphs.get(graphName);
+        if( u > sz || u < 1 || v < 1 || v > sz){
+            return "nodes invalid";
+        }
         ArrayList<Integer[]> list1 = adj.get(graphName).get(u);
         ArrayList<Integer[]> list2 = adj.get(graphName).get(v);
         // HashMap<Integer, ArrayList<Integer> > adj = adj.get(graphName);
         list1.add(new Integer[]{v ,w}); 
         list2.add(new Integer[]{u ,w}); 
-        return "";
+        return "Node added to the graph";
     }
 
 } 

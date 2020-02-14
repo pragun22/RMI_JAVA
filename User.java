@@ -12,7 +12,7 @@ public class User{
         }
         String server = args[0];
         Integer server_port = Integer.parseInt(args[1]);
-        
+        Graph serverObj = (Graph)Naming.lookup("rmi://" + server_ip + ":" + server_port + "/graph");
         BufferedReader buffRead = new BufferedReader(new InputStreamReader(System.in));
         System.println("Welcome to the server\n");
         while(true){
