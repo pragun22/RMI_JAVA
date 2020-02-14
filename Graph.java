@@ -7,14 +7,15 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.*; 
 
-public class Graph extends UnicastRemoteObject {
+public class Graph extends UnicastRemoteObject implements GraphInterface{
     Graph() throws RemoteException { 
         super(); 
     } 
     Map<String,Integer> Graphs = new HashMap<String, Integer>(); 
     Map<String, HashMap<Integer, ArrayList<Integer[]> > > adj = new HashMap<String, HashMap<Integer, ArrayList<Integer[]> > >(); 
     // Map<String, Map<Integer, ArrayList<Integer> > > adj = new HashMap<String, Map<Integer, ArrayList<Integer> > >(); 
-    public String add_graph(String graphName, Integer n){
+    @Override
+    public String add_graph(String graphName, Integer n) throws RemoteException{
         if(Graphs.containsKey(graphName)){
             return "A graph already with this name exist";
         }
@@ -23,7 +24,8 @@ public class Graph extends UnicastRemoteObject {
         // adj.put(graphName, new HashMap<Integer, ArrayList<Integer> >());
         return "Graph Added Succesfully\n";
     }
-    public String add_edge(String graphName, Integer u, Integer v, Integer w){
+    @Override
+    public String add_edge(String graphName, Integer u, Integer v, Integer w) throws RemoteException{
         if(!Graphs.containsKey(graphName)){
             return "Sorry no such graph exist";
         }
@@ -39,8 +41,4 @@ public class Graph extends UnicastRemoteObject {
         return "Node added to the graph";
     }
 
-} 
-class pair{
-    public Integer first;
-    public Integer second;
 }

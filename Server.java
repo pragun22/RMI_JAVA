@@ -10,17 +10,21 @@ import java.rmi.registry.*;
 
 public class Server{
     public static void main(String args[]){
-        if(args.length==0){
+        try{
+            if(args.length==0){
             System.out.println("Specify Port number\n Usage javac Server [:PORT NUM:]");
             System.exit(0);
+            }
+            if(args.length>=2){
+                System.out.println("Wrong Syntax\n Usage javac Server [:PORT NUM:]");
+                System.exit(0);
+            }
+            Integer port = Integer.parseInt(args[0]);
+            Graph obj = new Graph();
+            LocateRegistry.createRegistry(port);
+            Naming.rebind("rmi://0.0.0.0:"+ port.toString() + "/graph", obj);
+        }catch(Exception e){
+            System.out.println(e);
         }
-        if(args.length>=2){
-            System.out.println("Wrong Syntax\n Usage javac Server [:PORT NUM:]");
-            System.exit(0);
-        }
-        Integer port = Integer.parseInt(args[0]);
-        Graph obj = new Graph();
-        LocateRegistry.createRegistry(port);
-        Naming.rebind("rmi://0.0.0.0:"+ port.toString() + "/graph", obj);
     }
 }
