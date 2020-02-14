@@ -21,7 +21,4 @@ public class Server{
         Integer port = Integer.parseInt(args[0]);
             test();
     }
-    private static void test(){
-        System.out.println("yaya");
-    }
 }

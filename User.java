@@ -12,7 +12,7 @@ public class User{
         }
         String server = args[0];
         Integer server_port = Integer.parseInt(args[1]);
-
+        
         BufferedReader buffRead = new BufferedReader(new InputStreamReader(System.in));
         System.println("Welcome to the server\n");
         while(true){
