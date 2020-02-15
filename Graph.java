@@ -12,16 +12,15 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
         super(); 
     } 
     Map<String,Integer> Graphs = new HashMap<String, Integer>(); 
-    Map<String, HashMap<Integer, ArrayList<Integer[]> > > adj = new HashMap<String, HashMap<Integer, ArrayList<Integer[]> > >(); 
-    // Map<String, Map<Integer, ArrayList<Integer> > > adj = new HashMap<String, Map<Integer, ArrayList<Integer> > >(); 
+    Map<String, ArrayList<Integer[]>> edges = new HashMap< String, ArrayList<Integer[]> >();
+    Map<String, Map<Integer, ArrayList<Integer[]> > > adj = new HashMap<String, Map<Integer, ArrayList<Integer[]> > >(); 
     @Override
     public String add_graph(String graphName, Integer n) throws RemoteException{
         if(Graphs.containsKey(graphName)){
             return "A graph already with this name exist";
         }
         Graphs.put(graphName, n);
-        adj.put(graphName, new HashMap<Integer, ArrayList<Integer[]> >());
-        // adj.put(graphName, new HashMap<Integer, ArrayList<Integer> >());
+        edges.put(graphName, new ArrayList<Integer[]>());
         return "Graph Added Succesfully\n";
     }
     @Override
@@ -33,12 +32,55 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
         if( u > sz || u < 1 || v < 1 || v > sz){
             return "nodes invalid";
         }
-        ArrayList<Integer[]> list1 = adj.get(graphName).get(u);
-        ArrayList<Integer[]> list2 = adj.get(graphName).get(v);
-        // HashMap<Integer, ArrayList<Integer> > adj = adj.get(graphName);
-        list1.add(new Integer[]{v ,w}); 
-        list2.add(new Integer[]{u ,w}); 
+        ArrayList<Integer[]> ed = edges.get(graphName);
+        if(ed==null){
+            ed = new ArrayList<Integer[]>();
+        }
+        ed.add(new Integer[]{u, v, w});
+        System.out.print("adding edge to graph "+graphName+"\n");
         return "Node added to the graph";
+    }
+    @Override
+    public Integer get_mst(String graphName){
+        if(!Graphs.containsKey(graphName)){
+            return -1;
+        }
+        ArrayList<Integer[]> ed = edges.get(graphName);
+        Integer sz = Graphs.get(graphName);
+        Integer ans = 0;
+        if(ed==null || ed.size()==0){
+            return -1;
+        }
+        Collections.sort(ed, new Comparator<Integer[]>() {
+            @Override
+            public int compare(Integer[] a, Integer[] b){
+                return a[2].compareTo(b[2]);
+            }
+        });
+        for (int i = 0 ; i < ed.size() && sz>1; i++){
+            Integer[] e = ed.get(i);
+            if(unions(e[0], e[1]) == 1){
+                ans += e[2];
+                sz--;
+            }
+        }
+        return ans;
+    }
+    private int[] par = new int[100005];
+    private Integer find(Integer a){
+        while(par[a]!=a) a = par[a];
+        return a;
+    }
+    private Integer unions(Integer a, Integer b){
+        Integer p1 = find(a);
+        Integer p2 = find(b);
+        if(p1==p2) return 0;
+        if(p1<p2){
+            par[p2] = p1;
+            return 1;
+        }
+        par[p1] = p2;
+        return 1;
     }
 
 }

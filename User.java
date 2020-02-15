@@ -13,11 +13,12 @@ public class User{
             }
             String server = args[0];
             Integer server_port = Integer.parseInt(args[1]);
-            GraphInterface serverObj = (GraphInterface)Naming.lookup("rmi://" + server + ":" + server_port.toString() + "/graph");
+            GraphInterface serverObj = (GraphInterface)Naming.lookup("rmi://" + server + ":" + server_port + "/graph_mst");
             BufferedReader buffRead = new BufferedReader(new InputStreamReader(System.in));
             System.out.println("Welcome to the server\n");
         
             while(true){
+                System.out.print("Enter your query:-\n>>> ");
                 String inputLine = buffRead.readLine();
                 if(inputLine.length() == 0) continue;
 
@@ -29,7 +30,7 @@ public class User{
                     System.exit(0);
                 }
                 String command = tokens.nextToken();
-                if(tokens.countTokens() == 1){
+                if(tokens.countTokens() == 0){
                     if(command.equals("exit")){
                         break;
                     }
@@ -37,14 +38,14 @@ public class User{
                         System.out.println("Wrong Command");
                     }
                 }
-                else if(tokens.countTokens()==2){
+                else if(tokens.countTokens()==1){
                     if(!command.equals("get_mst")){
                         System.out.println("Wrong Command");
                     }
                     // String graphName = tokens.nextToken();
                     // String result = serverObj.get_mst(graphName);
                 }
-                else if(tokens.countTokens()==3){
+                else if(tokens.countTokens()==2){
                     if(!command.equals("add_graph")){
                         System.out.println("Wrong Command");
                     }
@@ -59,7 +60,7 @@ public class User{
                     System.out.println(result);
                     
                 }
-                else if(tokens.countTokens()==5){
+                else if(tokens.countTokens()==4){
                     if(!command.equals("add_edge")){
                         System.out.println("Wrong Command");
                     }

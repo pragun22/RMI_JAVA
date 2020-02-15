@@ -22,7 +22,7 @@ public class Server{
             Integer port = Integer.parseInt(args[0]);
             Graph obj = new Graph();
             LocateRegistry.createRegistry(port);
-            Naming.rebind("rmi://0.0.0.0:"+ port.toString() + "/graph", obj);
+            Naming.rebind("rmi://0.0.0.0:"+ port.toString() + "/graph_mst", obj);
         }catch(Exception e){
             System.out.println(e);
         }
