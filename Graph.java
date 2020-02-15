@@ -13,7 +13,7 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
     } 
     Map<String,Integer> Graphs = new HashMap<String, Integer>(); 
     Map<String, ArrayList<Integer[]>> edges = new HashMap< String, ArrayList<Integer[]> >();
-    Map<String, Map<Integer, ArrayList<Integer[]> > > adj = new HashMap<String, Map<Integer, ArrayList<Integer[]> > >(); 
+    private int[] par = new int[100005];
     @Override
     public String add_graph(String graphName, Integer n) throws RemoteException{
         if(Graphs.containsKey(graphName)){
@@ -41,13 +41,13 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
         return "Node added to the graph";
     }
     @Override
-    public Integer get_mst(String graphName){
+    public int get_mst(String graphName){
         if(!Graphs.containsKey(graphName)){
             return -1;
         }
         ArrayList<Integer[]> ed = edges.get(graphName);
-        Integer sz = Graphs.get(graphName);
-        Integer ans = 0;
+        int sz = Graphs.get(graphName);
+        int ans = 0;
         for(int i = 0 ; i <= sz ; i++){
             par[i] = i;
         }
@@ -67,17 +67,21 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
                 sz--;
             }
         }
+        if(sz!=1){
+            return -1;
+        } 
         return ans;
     }
-    private int[] par = new int[100005];
-    private Integer find(Integer a){
+    private int find(int a){
         while(par[a]!=a) a = par[a];
         return a;
     }
-    private Integer unions(Integer a, Integer b){
-        Integer p1 = find(a);
-        Integer p2 = find(b);
-        if(p1==p2) return 0;
+    private int unions(int a, int b){
+        int p1 = find(a);
+        int p2 = find(b);
+        if(p1 == p2){
+            return 0;
+        } 
         if(p1<p2){
             par[p2] = p1;
             return 1;

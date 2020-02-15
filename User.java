@@ -27,7 +27,8 @@ public class User{
                     System.out.println("Wrong Command\n Commands available :-\n1. exit\n");
                     System.out.println("2. add_graph <graph_identifier> n\n3. add_edge <graph_identifire> u v w");
                     System.out.println("\n4. get_mst <graph_identifier>");
-                    System.exit(0);
+                    // System.exit(0);
+                    continue;
                 }
                 String command = tokens.nextToken();
                 if(tokens.countTokens() == 0){
@@ -41,13 +42,16 @@ public class User{
                 else if(tokens.countTokens()==1){
                     if(!command.equals("get_mst")){
                         System.out.println("Wrong Command");
+                        continue;
                     }
-                    // String graphName = tokens.nextToken();
-                    // String result = serverObj.get_mst(graphName);
+                    String graphName = tokens.nextToken();
+                    Integer result = serverObj.get_mst(graphName);
+                    System.out.print(result+"\n");
                 }
                 else if(tokens.countTokens()==2){
                     if(!command.equals("add_graph")){
                         System.out.println("Wrong Command");
+                        continue;
                     }
                     String graphName = tokens.nextToken();
                     Integer n = 0;
@@ -62,7 +66,8 @@ public class User{
                 }
                 else if(tokens.countTokens()==4){
                     if(!command.equals("add_edge")){
-                        System.out.println("Wrong Command");
+                        System.out.println("Wrong Command\n");
+                        continue;
                     }
                     String graphName = tokens.nextToken();
                     Integer u = 0, v= 0, w = 0;
@@ -71,7 +76,7 @@ public class User{
                         v = Integer.parseInt(tokens.nextToken());
                         w = Integer.parseInt(tokens.nextToken());
                     }catch(Exception e){
-                        System.out.println("Nodes and weights must be integer");
+                        System.out.println("Nodes and weights must be integer\n");
                     }
                     String result = serverObj.add_edge(graphName, u, v, w);
                     System.out.println(result);
