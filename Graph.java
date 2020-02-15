@@ -48,6 +48,9 @@ public class Graph extends UnicastRemoteObject implements GraphInterface{
         ArrayList<Integer[]> ed = edges.get(graphName);
         Integer sz = Graphs.get(graphName);
         Integer ans = 0;
+        for(int i = 0 ; i <= sz ; i++){
+            par[i] = i;
+        }
         if(ed==null || ed.size()==0){
             return -1;
         }
